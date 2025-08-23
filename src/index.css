@@ -31,8 +31,8 @@
     --accent: 331 77% 54%; /* #e53170 - Pink/magenta tertiary */
     --accent-foreground: 60 30% 99%; /* White text */
 
-    --destructive: 239 68% 68%; /* Red-400 */
-    --destructive-foreground: 248 250 252;
+    --destructive: 0 84% 60%; /* Red */
+    --destructive-foreground: 60 30% 99%; /* White text */
 
     --border: 248 25% 20%; /* Darker border for dark theme */
     --input: 248 25% 20%;
