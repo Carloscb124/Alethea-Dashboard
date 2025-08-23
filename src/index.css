@@ -6,9 +6,9 @@
 
 @layer base {
   :root {
-    /* Base colors - Professional and trustworthy */
-    --background: 249 250 251; /* Cool gray background */
-    --foreground: 15 23 42; /* Slate-900 for high contrast text */
+    /* Base colors - Modern vibrant theme */
+    --background: 250 250 253; /* Soft lavender background */
+    --foreground: 15 23 42; /* Dark text for contrast */
 
     --card: 255 255 255; /* Pure white cards */
     --card-foreground: 15 23 42;
@@ -16,27 +16,27 @@
     --popover: 255 255 255;
     --popover-foreground: 15 23 42;
 
-    /* Primary brand - Deep blue for trust and authority */
-    --primary: 224 71% 28%; /* Deep blue-600 */
-    --primary-foreground: 248 250 252;
-    --primary-glow: 224 76% 48%; /* Lighter blue for gradients */
+    /* Primary brand - Vibrant purple/pink gradient */
+    --primary: 280 100% 70%; /* Bright purple */
+    --primary-foreground: 255 255 255;
+    --primary-glow: 320 100% 80%; /* Pink glow */
 
-    /* Secondary - Neutral grays */
-    --secondary: 248 250 252; /* Slate-50 */
-    --secondary-foreground: 51 65 85; /* Slate-600 */
+    /* Secondary - Soft complementary colors */
+    --secondary: 260 60% 95%; /* Very light purple */
+    --secondary-foreground: 280 80% 30; /* Dark purple */
 
-    --muted: 241 245 249; /* Slate-100 */
-    --muted-foreground: 100 116 139; /* Slate-500 */
+    --muted: 250 50% 96; /* Very light lavender */
+    --muted-foreground: 240 30% 60; /* Medium gray-purple */
 
-    --accent: 239 246 255; /* Blue-50 */
-    --accent-foreground: 30 64 175; /* Blue-700 */
+    --accent: 320 100% 95; /* Light pink */
+    --accent-foreground: 320 80% 30; /* Dark pink */
 
     --destructive: 239 68% 68%; /* Red-400 */
     --destructive-foreground: 248 250 252;
 
-    --border: 226 232 240; /* Slate-200 */
-    --input: 226 232 240;
-    --ring: 224 71% 28%;
+    --border: 260 60% 90; /* Soft purple border */
+    --input: 260 60% 90;
+    --ring: 280 100% 70; /* Bright purple ring to match primary */
 
     --radius: 0.75rem;
 
@@ -51,9 +51,9 @@
     --verified-manipulated-bg: 250 245 255; /* Purple-50 */
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-    --gradient-hero: linear-gradient(135deg, hsl(224 71% 28%), hsl(224 76% 48%));
-    --gradient-card: linear-gradient(145deg, hsl(255 255 255), hsl(248 250 252));
+    --gradient-primary: linear-gradient(135deg, hsl(280 100% 70%), hsl(320 100% 80%));
+    --gradient-hero: linear-gradient(135deg, hsl(280 100% 70%), hsl(320 100% 80%));
+    --gradient-card: linear-gradient(145deg, hsl(255 255 255), hsl(250 250 253));
 
     /* Shadows */
     --shadow-card: 0 1px 3px 0 hsl(15 23 42 / 0.1), 0 1px 2px -1px hsl(15 23 42 / 0.1);
