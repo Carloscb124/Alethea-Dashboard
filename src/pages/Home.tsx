@@ -55,14 +55,14 @@ const Home = () => {
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Jornal <span className="text-primary-glow">Alethea</span>
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed">
               Notícias verificadas para uma sociedade melhor informada
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 asChild
                 size="lg"
-                className="bg-white text-primary hover:bg-gray-100"
+                variant="secondary"
               >
                 <Link to="/submit">
                   Enviar Conteúdo
@@ -73,7 +73,7 @@ const Home = () => {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-white text-white hover:bg-white hover:text-primary"
+                className="border-white/20 text-white hover:bg-white/10"
               >
                 <Link to="/learn">Aprenda a Verificar</Link>
               </Button>

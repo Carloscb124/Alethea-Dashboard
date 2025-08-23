@@ -181,4 +181,21 @@
     @apply bg-card/80 backdrop-blur-lg border-b border-border;
     box-shadow: var(--shadow-nav);
   }
+
+  /* Utility classes for verification colors */
+  .text-verified-true {
+    color: hsl(var(--verified-true));
+  }
+
+  .text-verified-false {
+    color: hsl(var(--verified-false));
+  }
+
+  .text-verified-partial {
+    color: hsl(var(--verified-partial));
+  }
+
+  .text-verified-manipulated {
+    color: hsl(var(--verified-manipulated));
+  }
 }

@@ -21,7 +21,7 @@ const NewsCard = ({ news, onClick }: NewsCardProps) => {
       onClick={onClick}
     >
       <div className="flex items-start justify-between mb-3">
-        <span className="text-xs font-medium text-primary bg-accent px-2 py-1 rounded-lg">
+        <span className="text-xs font-medium text-accent-foreground bg-accent px-2 py-1 rounded-lg">
           {news.category}
         </span>
         <VerificationBadge status={news.status} />
