@@ -9,9 +9,9 @@ import {
 import { useTheme } from '@/hooks/use-theme';
 
 const themes = [
-  { value: 'default', label: 'Alethea (Padrão)' },
-  { value: 'purple', label: 'Roxo' },
-  { value: 'dark', label: 'Escuro' },
+  { value: 'purple', label: 'Roxo (Padrão)' },
+  { value: 'orange', label: 'Laranja' },
+  { value: 'light', label: 'Branco' },
 ];
 
 export function ThemeSelector() {
@@ -29,7 +29,7 @@ export function ThemeSelector() {
         {themes.map((themeOption) => (
           <DropdownMenuItem
             key={themeOption.value}
-            onClick={() => setTheme(themeOption.value as 'default' | 'purple' | 'dark')}
+            onClick={() => setTheme(themeOption.value as 'purple' | 'orange' | 'light')}
             className={theme === themeOption.value ? 'bg-accent' : ''}
           >
             {themeOption.label}

@@ -175,6 +175,133 @@
     --sidebar-border: 248 15% 20%;
     --sidebar-ring: 261 85% 65%;
   }
+
+  .orange-theme {
+    /* Original Alethea theme - Orange/Dark */
+    --background: 248 25% 8%; /* #0f0e17 - Dark background */
+    --foreground: 60 30% 99%; /* #fffffe - White text */
+
+    --card: 248 25% 12%; /* Slightly lighter than background */
+    --card-foreground: 60 30% 99%; /* #fffffe - White text */
+
+    --popover: 248 25% 12%;
+    --popover-foreground: 60 30% 99%;
+
+    /* Primary brand - Orange button color */
+    --primary: 33 100% 51%; /* #ff8906 - Orange */
+    --primary-foreground: 60 30% 99%; /* #fffffe - White text */
+    --primary-glow: 33 100% 65%; /* Lighter orange for effects */
+
+    /* Secondary - Red/coral accent */
+    --secondary: 7 87% 62%; /* #f25f4c - Red/coral */
+    --secondary-foreground: 60 30% 99%; /* White text */
+
+    --muted: 248 25% 15%; /* Slightly lighter dark */
+    --muted-foreground: 235 15% 70%; /* #a7a9be - Gray-blue paragraph text */
+
+    --accent: 331 77% 54%; /* #e53170 - Pink/magenta tertiary */
+    --accent-foreground: 60 30% 99%; /* White text */
+
+    --destructive: 0 84% 60%; /* Red */
+    --destructive-foreground: 60 30% 99%; /* White text */
+
+    --border: 248 25% 20%; /* Darker border for dark theme */
+    --input: 248 25% 20%;
+    --ring: 33 100% 51%; /* Orange ring to match primary */
+
+    /* Verification status colors */
+    --verified-true: 142 76% 36%; /* Green for dark theme */
+    --verified-true-bg: 248 25% 15%; /* Dark background */
+    --verified-false: 7 87% 62%; /* Red/coral from palette */
+    --verified-false-bg: 248 25% 15%; /* Dark background */
+    --verified-partial: 33 100% 51%; /* Orange from palette */
+    --verified-partial-bg: 248 25% 15%; /* Dark background */
+    --verified-manipulated: 331 77% 54%; /* Pink/magenta from palette */
+    --verified-manipulated-bg: 248 25% 15%; /* Dark background */
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(33 100% 51%), hsl(33 100% 65%));
+    --gradient-hero: linear-gradient(135deg, hsl(33 100% 51%), hsl(7 87% 62%));
+    --gradient-card: linear-gradient(145deg, hsl(248 25% 12%), hsl(248 25% 15%));
+
+    /* Shadows for dark theme */
+    --shadow-card: 0 4px 6px -1px hsl(248 25% 5% / 0.8), 0 2px 4px -2px hsl(248 25% 5% / 0.6);
+    --shadow-card-hover: 0 10px 15px -3px hsl(248 25% 5% / 0.8), 0 4px 6px -4px hsl(248 25% 5% / 0.6);
+    --shadow-nav: 0 4px 6px -1px hsl(248 25% 5% / 0.8);
+
+    /* Sidebar colors for dark theme */
+    --sidebar-background: 248 25% 10%;
+    --sidebar-foreground: 60 30% 99%;
+    --sidebar-primary: 33 100% 51%;
+    --sidebar-primary-foreground: 60 30% 99%;
+    --sidebar-accent: 248 25% 15%;
+    --sidebar-accent-foreground: 60 30% 99%;
+    --sidebar-border: 248 25% 20%;
+    --sidebar-ring: 33 100% 51%;
+  }
+
+  .light-theme {
+    /* Light theme with custom colors */
+    --background: 60 30% 99%; /* #fffffe - Background */
+    --foreground: 237 13% 20%; /* #2b2c34 - Headlines */
+
+    --card: 0 0% 100%; /* Pure white cards */
+    --card-foreground: 237 13% 20%; /* #2b2c34 */
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 237 13% 20%;
+
+    /* Purple button color */
+    --primary: 252 83% 60%; /* #6246ea - Button */
+    --primary-foreground: 60 30% 99%; /* #fffffe - Button text */
+    --primary-glow: 252 83% 70%; /* Lighter purple for effects */
+
+    --secondary: 210 17% 95%;
+    --secondary-foreground: 237 13% 20%;
+
+    --muted: 210 17% 95%;
+    --muted-foreground: 237 13% 20%; /* #2b2c34 - Paragraph text */
+
+    --accent: 252 83% 60%;
+    --accent-foreground: 60 30% 99%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 60 30% 99%;
+
+    --border: 210 17% 90%;
+    --input: 210 17% 90%;
+    --ring: 252 83% 60%; /* Purple ring to match primary */
+
+    /* Verification status colors adapted for light theme */
+    --verified-true: 142 76% 36%;
+    --verified-true-bg: 142 76% 95%;
+    --verified-false: 0 75% 55%;
+    --verified-false-bg: 0 75% 95%;
+    --verified-partial: 45 93% 50%;
+    --verified-partial-bg: 45 93% 95%;
+    --verified-manipulated: 252 83% 60%;
+    --verified-manipulated-bg: 252 83% 95%;
+
+    /* Gradients for light theme */
+    --gradient-primary: linear-gradient(135deg, hsl(252 83% 60%), hsl(252 83% 70%));
+    --gradient-hero: linear-gradient(135deg, hsl(252 83% 60%), hsl(252 73% 65%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(210 17% 98%));
+
+    /* Shadows for light theme */
+    --shadow-card: 0 4px 6px -1px hsl(220 13% 91% / 0.8), 0 2px 4px -2px hsl(220 13% 91% / 0.6);
+    --shadow-card-hover: 0 10px 15px -3px hsl(220 13% 91% / 0.8), 0 4px 6px -4px hsl(220 13% 91% / 0.6);
+    --shadow-nav: 0 4px 6px -1px hsl(220 13% 91% / 0.8);
+
+    /* Sidebar colors for light theme */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 237 13% 20%;
+    --sidebar-primary: 252 83% 60%;
+    --sidebar-primary-foreground: 60 30% 99%;
+    --sidebar-accent: 210 17% 95%;
+    --sidebar-accent-foreground: 237 13% 20%;
+    --sidebar-border: 210 17% 90%;
+    --sidebar-ring: 252 83% 60%;
+  }
 }
 
 @layer base {

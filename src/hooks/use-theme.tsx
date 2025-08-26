@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'default' | 'purple' | 'dark';
+type Theme = 'purple' | 'orange' | 'light';
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ type ThemeProviderState = {
 };
 
 const initialState: ThemeProviderState = {
-  theme: 'default',
+  theme: 'purple',
   setTheme: () => null,
 };
 
@@ -22,7 +22,7 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
   children,
-  defaultTheme = 'default',
+  defaultTheme = 'purple',
   storageKey = 'alethea-theme',
   ...props
 }: ThemeProviderProps) {
@@ -33,12 +33,14 @@ export function ThemeProvider({
   useEffect(() => {
     const root = window.document.documentElement;
 
-    root.classList.remove('purple-theme', 'dark');
+    root.classList.remove('purple-theme', 'orange-theme', 'light-theme');
 
     if (theme === 'purple') {
       root.classList.add('purple-theme');
-    } else if (theme === 'dark') {
-      root.classList.add('dark');
+    } else if (theme === 'orange') {
+      root.classList.add('orange-theme');
+    } else if (theme === 'light') {
+      root.classList.add('light-theme');
     }
   }, [theme]);
 
