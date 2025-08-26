@@ -112,6 +112,69 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
+  .purple-theme {
+    /* Purple theme with custom colors */
+    --background: 248 15% 11%; /* #16161a */
+    --foreground: 60 30% 99%; /* #fffffe - Headlines */
+
+    --card: 248 15% 13%; /* Slightly lighter than background */
+    --card-foreground: 60 30% 99%; /* #fffffe */
+
+    --popover: 248 15% 13%;
+    --popover-foreground: 60 30% 99%;
+
+    /* Purple button color */
+    --primary: 261 85% 65%; /* #7f5af0 - Button */
+    --primary-foreground: 60 30% 99%; /* #fffffe - Button text */
+    --primary-glow: 261 85% 75%; /* Lighter purple for effects */
+
+    --secondary: 248 15% 18%;
+    --secondary-foreground: 60 30% 99%;
+
+    --muted: 248 15% 16%;
+    --muted-foreground: 214 15% 65%; /* #94a1b2 - Paragraph text */
+
+    --accent: 261 85% 65%;
+    --accent-foreground: 60 30% 99%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 60 30% 99%;
+
+    --border: 248 15% 20%;
+    --input: 248 15% 20%;
+    --ring: 261 85% 65%; /* Purple ring to match primary */
+
+    /* Verification status colors adapted for purple theme */
+    --verified-true: 142 76% 45%;
+    --verified-true-bg: 248 15% 15%;
+    --verified-false: 0 75% 65%;
+    --verified-false-bg: 248 15% 15%;
+    --verified-partial: 45 93% 60%;
+    --verified-partial-bg: 248 15% 15%;
+    --verified-manipulated: 261 85% 65%;
+    --verified-manipulated-bg: 248 15% 15%;
+
+    /* Gradients for purple theme */
+    --gradient-primary: linear-gradient(135deg, hsl(261 85% 65%), hsl(261 85% 75%));
+    --gradient-hero: linear-gradient(135deg, hsl(261 85% 65%), hsl(261 75% 70%));
+    --gradient-card: linear-gradient(145deg, hsl(248 15% 13%), hsl(248 15% 16%));
+
+    /* Shadows for purple theme */
+    --shadow-card: 0 4px 6px -1px hsl(248 15% 8% / 0.8), 0 2px 4px -2px hsl(248 15% 8% / 0.6);
+    --shadow-card-hover: 0 10px 15px -3px hsl(248 15% 8% / 0.8), 0 4px 6px -4px hsl(248 15% 8% / 0.6);
+    --shadow-nav: 0 4px 6px -1px hsl(248 15% 8% / 0.8);
+
+    /* Sidebar colors for purple theme */
+    --sidebar-background: 248 15% 9%;
+    --sidebar-foreground: 60 30% 99%;
+    --sidebar-primary: 261 85% 65%;
+    --sidebar-primary-foreground: 60 30% 99%;
+    --sidebar-accent: 248 15% 15%;
+    --sidebar-accent-foreground: 60 30% 99%;
+    --sidebar-border: 248 15% 20%;
+    --sidebar-ring: 261 85% 65%;
+  }
 }
 
 @layer base {
