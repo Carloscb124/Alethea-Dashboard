@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Search, Send, BookOpen, Menu, X, Shield } from 'lucide-react';
 import { Button } from './ui/button';
+import { ThemeSelector } from './ThemeSelector';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,7 +48,8 @@ const Navbar = () => {
           </div>
 
           {/* Desktop CTA */}
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center space-x-2">
+            <ThemeSelector />
             <Button 
               asChild
               className="btn-primary"
@@ -84,6 +86,10 @@ const Navbar = () => {
               </Link>
             ))}
             <div className="pt-2 border-t border-border">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-muted-foreground">Tema:</span>
+                <ThemeSelector />
+              </div>
               <Button 
                 asChild
                 className="btn-primary w-full"
