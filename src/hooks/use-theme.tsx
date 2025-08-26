@@ -33,7 +33,7 @@ export function ThemeProvider({
   useEffect(() => {
     const root = window.document.documentElement;
 
-    root.classList.remove('default', 'purple', 'dark');
+    root.classList.remove('purple-theme', 'dark');
 
     if (theme === 'purple') {
       root.classList.add('purple-theme');
