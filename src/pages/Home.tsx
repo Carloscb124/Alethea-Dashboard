@@ -71,9 +71,8 @@ const Home = () => {
               </Button>
               <Button 
                 asChild
-                variant="outline"
+                variant="hero"
                 size="lg"
-                className="border-white/20 text-white hover:bg-white/10"
               >
                 <Link to="/learn">Aprenda a Verificar</Link>
               </Button>
