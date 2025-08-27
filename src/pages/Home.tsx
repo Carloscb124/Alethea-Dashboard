@@ -70,6 +70,45 @@ const Home = () => {
     }
   };
 
+  const crawlSpecificNews = async (urls: string[]) => {
+    setCrawling(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('crawl-news', {
+        body: { 
+          sources: urls,
+          limit: 1 // Only get the main article from each URL
+        }
+      });
+
+      if (error) {
+        console.error('Error crawling specific news:', error);
+        toast({
+          title: "Erro ao buscar notícias",
+          description: "Não foi possível buscar as notícias específicas.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Notícias específicas adicionadas!",
+        description: `${urls.length} notícias foram processadas com sucesso.`,
+      });
+
+      // Reload news after crawling
+      await loadNews();
+    } catch (error) {
+      console.error('Error crawling specific news:', error);
+      toast({
+        title: "Erro ao buscar notícias",
+        description: "Ocorreu um erro inesperado.",
+        variant: "destructive",
+      });
+    } finally {
+      setCrawling(false);
+    }
+  };
+
   const crawlNews = async () => {
     setCrawling(true);
     try {
@@ -108,6 +147,32 @@ const Home = () => {
 
   useEffect(() => {
     loadNews();
+    
+    // Auto-crawl specific news URLs on component mount
+    const specificUrls = [
+      'https://g1.globo.com/df/distrito-federal/noticia/2025/08/27/condominio-onde-bolsonaro-cumpre-prisao-no-df-ja-soltou-notas-para-regular-uso-de-drones-e-negar-expulsao-de-moradores.ghtml',
+      'https://oglobo.globo.com/rio/noticia/2025/08/26/casa-do-traficante-lacoste-um-dos-chefes-do-tcp-tinha-saida-secreta-para-mata-na-comunidade-da-serrinha.ghtml',
+      'https://www.cartacapital.com.br/politica/motta-acena-a-bolsonaristas-e-camara-deve-votar-nesta-quarta-blindagem-a-parlamentares/',
+      'https://oglobo.globo.com/economia/imposto-de-renda/noticia/2025/08/27/isencao-de-ir-para-quem-ganha-ate-r-5-mil-veja-como-o-projeto-mexe-no-bolso-de-cada-classe-social.ghtml',
+      'https://veja.abril.com.br/coluna/radar/pf-recomenda-a-moraes-colocar-agentes-dentro-da-casa-de-bolsonaro/'
+    ];
+    
+    // Check if we need to crawl these specific URLs
+    const checkAndCrawlSpecific = async () => {
+      const { data } = await supabase
+        .from('news_items')
+        .select('url')
+        .in('url', specificUrls);
+      
+      const existingUrls = data?.map(item => item.url) || [];
+      const missingUrls = specificUrls.filter(url => !existingUrls.includes(url));
+      
+      if (missingUrls.length > 0) {
+        setTimeout(() => crawlSpecificNews(missingUrls), 2000); // Delay to avoid conflicts
+      }
+    };
+    
+    checkAndCrawlSpecific();
   }, []);
 
   const stats = [
