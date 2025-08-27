@@ -2,24 +2,100 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import NewsCard from '@/components/NewsCard';
-import { mockNewsData, NewsItem } from '@/data/mockData';
-import { ArrowRight, TrendingUp, CheckCircle, AlertTriangle } from 'lucide-react';
+import { NewsItem } from '@/data/mockData';
+import { ArrowRight, TrendingUp, CheckCircle, AlertTriangle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/components/ui/use-toast';
 
 const Home = () => {
   const [newsData, setNewsData] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [crawling, setCrawling] = useState(false);
+  const { toast } = useToast();
+
+  const loadNews = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('news_items')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(10);
+      
+      if (error) {
+        console.error('Error loading news:', error);
+        toast({
+          title: "Erro ao carregar notícias",
+          description: "Não foi possível carregar as notícias do banco de dados.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Transform Supabase data to NewsItem format
+      const transformedNews: NewsItem[] = (data || []).map(item => ({
+        id: item.id,
+        title: item.title || 'Título não disponível',
+        summary: item.summary || 'Resumo não disponível',
+        category: item.category || 'Geral',
+        date: item.published_at || item.created_at,
+        source: item.source || 'Fonte não identificada',
+        status: 'partial' as const, // Default status since we don't have verification yet
+        readTime: item.read_time || 5,
+        image: item.image_url
+      }));
+
+      setNewsData(transformedNews);
+    } catch (error) {
+      console.error('Error loading news:', error);
+      toast({
+        title: "Erro ao carregar notícias",
+        description: "Ocorreu um erro inesperado.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const crawlNews = async () => {
+    setCrawling(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('crawl-news', {
+        body: { limit: 5 }
+      });
+
+      if (error) {
+        console.error('Error crawling news:', error);
+        toast({
+          title: "Erro ao buscar notícias",
+          description: "Não foi possível buscar novas notícias.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Notícias atualizadas!",
+        description: "Novas notícias foram coletadas com sucesso.",
+      });
+
+      // Reload news after crawling
+      await loadNews();
+    } catch (error) {
+      console.error('Error crawling news:', error);
+      toast({
+        title: "Erro ao buscar notícias",
+        description: "Ocorreu um erro inesperado.",
+        variant: "destructive",
+      });
+    } finally {
+      setCrawling(false);
+    }
+  };
 
   useEffect(() => {
-    // Simulate API call
-    const loadNews = async () => {
-      setLoading(true);
-      // Simulate loading delay
-      await new Promise(resolve => setTimeout(resolve, 800));
-      setNewsData(mockNewsData);
-      setLoading(false);
-    };
-
     loadNews();
   }, []);
 
@@ -106,12 +182,23 @@ const Home = () => {
               <h2 className="text-2xl font-bold text-foreground">
                 Últimas Verificações
               </h2>
-              <Button asChild variant="outline">
-                <Link to="/search">
-                  Ver Todas
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </Link>
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={crawlNews}
+                  disabled={crawling}
+                  variant="outline"
+                  size="sm"
+                >
+                  <RefreshCw className={`w-4 h-4 mr-2 ${crawling ? 'animate-spin' : ''}`} />
+                  {crawling ? 'Buscando...' : 'Atualizar'}
+                </Button>
+                <Button asChild variant="outline">
+                  <Link to="/search">
+                    Ver Todas
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Link>
+                </Button>
+              </div>
             </div>
 
             {loading ? (
