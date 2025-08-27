@@ -6,7 +6,7 @@ import { NewsItem } from '@/data/mockData';
 import { ArrowRight, TrendingUp, CheckCircle, AlertTriangle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 const Home = () => {
   const [newsData, setNewsData] = useState<NewsItem[]>([]);
@@ -30,6 +30,17 @@ const Home = () => {
           description: "Não foi possível carregar as notícias do banco de dados.",
           variant: "destructive",
         });
+        return;
+      }
+
+      // If no news items exist, automatically crawl some
+      if (!data || data.length === 0) {
+        toast({
+          title: "Buscando notícias...",
+          description: "A base de dados está vazia. Buscando notícias automaticamente.",
+        });
+        setLoading(false);
+        await crawlNews();
         return;
       }
 
@@ -201,7 +212,7 @@ const Home = () => {
               </div>
             </div>
 
-            {loading ? (
+            {loading || crawling ? (
               <div className="grid gap-6">
                 {[...Array(3)].map((_, i) => (
                   <div key={i} className="card-alethea animate-pulse">
@@ -217,6 +228,14 @@ const Home = () => {
                     </div>
                   </div>
                 ))}
+              </div>
+            ) : newsData.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground mb-4">Nenhuma notícia encontrada.</p>
+                <Button onClick={crawlNews} variant="outline">
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Buscar Notícias
+                </Button>
               </div>
             ) : (
               <div className="grid gap-6">
