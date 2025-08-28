@@ -17,14 +17,11 @@ const Home = () => {
   const loadNews = async () => {
     setLoading(true);
     try {
-      console.log('Loading news from database...');
       const { data, error } = await supabase
         .from('news_items')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(10);
-      
-      console.log('Supabase response:', { data, error });
       
       if (error) {
         console.error('Error loading news:', error);
@@ -59,11 +56,10 @@ const Home = () => {
           source: item.source || 'Fonte não identificada',
           status: 'partial' as const, // Default status since we don't have verification yet
           readTime: item.read_time || 5,
-          image: item.image_url
+          image: item.image_url,
+          url: item.url
         }));
 
-      console.log('Transformed news data:', transformedNews);
-      console.log('Setting news data with', transformedNews.length, 'items');
       setNewsData(transformedNews);
     } catch (error) {
       console.error('Error loading news:', error);
@@ -315,10 +311,6 @@ const Home = () => {
                   <NewsCard 
                     key={news.id} 
                     news={news}
-                    onClick={() => {
-                      // Could navigate to detail page
-                      console.log('View news:', news.id);
-                    }}
                   />
                 ))}
               </div>

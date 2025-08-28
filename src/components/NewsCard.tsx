@@ -15,10 +15,17 @@ const NewsCard = ({ news, onClick }: NewsCardProps) => {
     locale: ptBR
   });
 
+  const handleClick = () => {
+    if (news.url) {
+      window.open(news.url, '_blank', 'noopener,noreferrer');
+    }
+    onClick?.();
+  };
+
   return (
     <article 
       className="card-alethea cursor-pointer group"
-      onClick={onClick}
+      onClick={handleClick}
     >
       <div className="flex items-start justify-between mb-3">
         <span className="text-xs font-medium text-accent-foreground bg-accent px-2 py-1 rounded-lg">

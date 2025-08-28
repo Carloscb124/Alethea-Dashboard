@@ -12,6 +12,7 @@ export interface NewsItem {
   status: VerificationStatus;
   image?: string;
   readTime: number;
+  url?: string;
 }
 
 export interface Submission {
