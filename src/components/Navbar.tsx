@@ -23,9 +23,11 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <Shield className="w-5 h-5 text-white" />
-            </div>
+            <img 
+              src="/lovable-uploads/c3a6ce76-f1bb-4abd-9151-fccb78b497df.png" 
+              alt="Alethea Logo" 
+              className="w-8 h-8 rounded-lg"
+            />
             <span className="text-xl font-bold text-foreground">Alethea</span>
           </Link>
 
