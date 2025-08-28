@@ -17,11 +17,14 @@ const Home = () => {
   const loadNews = async () => {
     setLoading(true);
     try {
+      console.log('Loading news from database...');
       const { data, error } = await supabase
         .from('news_items')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(10);
+      
+      console.log('Supabase response:', { data, error });
       
       if (error) {
         console.error('Error loading news:', error);
@@ -45,18 +48,22 @@ const Home = () => {
       }
 
       // Transform Supabase data to NewsItem format
-      const transformedNews: NewsItem[] = (data || []).map(item => ({
-        id: item.id,
-        title: item.title || 'Título não disponível',
-        summary: item.summary || 'Resumo não disponível',
-        category: item.category || 'Geral',
-        date: item.published_at || item.created_at,
-        source: item.source || 'Fonte não identificada',
-        status: 'partial' as const, // Default status since we don't have verification yet
-        readTime: item.read_time || 5,
-        image: item.image_url
-      }));
+      const transformedNews: NewsItem[] = (data || [])
+        .filter(item => item.title && item.summary) // Only include items with title and summary
+        .map(item => ({
+          id: item.id,
+          title: item.title || 'Título não disponível',
+          summary: item.summary || 'Resumo não disponível',
+          category: item.category || 'Geral',
+          date: item.published_at || item.created_at,
+          source: item.source || 'Fonte não identificada',
+          status: 'partial' as const, // Default status since we don't have verification yet
+          readTime: item.read_time || 5,
+          image: item.image_url
+        }));
 
+      console.log('Transformed news data:', transformedNews);
+      console.log('Setting news data with', transformedNews.length, 'items');
       setNewsData(transformedNews);
     } catch (error) {
       console.error('Error loading news:', error);
