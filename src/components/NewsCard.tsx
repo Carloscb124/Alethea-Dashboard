@@ -34,27 +34,44 @@ const NewsCard = ({ news, onClick }: NewsCardProps) => {
         <VerificationBadge status={news.status} />
       </div>
 
-      <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-        {news.title}
-      </h3>
+      <div className="flex gap-4">
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+            {news.title}
+          </h3>
 
-      <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-        {news.summary}
-      </p>
+          <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+            {news.summary}
+          </p>
 
-      <div className="flex items-center justify-between text-xs text-muted-foreground">
-        <div className="flex items-center gap-3">
-          <span className="font-medium">{news.source}</span>
-          <div className="flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            <span>{news.readTime} min</span>
+          <div className="flex items-center justify-between text-xs text-muted-foreground">
+            <div className="flex items-center gap-3">
+              <span className="font-medium">{news.source}</span>
+              <div className="flex items-center gap-1">
+                <Clock className="w-3 h-3" />
+                <span>{news.readTime} min</span>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <span>{formattedDate}</span>
+              <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
           </div>
         </div>
-        
-        <div className="flex items-center gap-2">
-          <span>{formattedDate}</span>
-          <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-        </div>
+
+        {news.image && (
+          <div className="flex-shrink-0">
+            <img 
+              src={news.image} 
+              alt={news.title}
+              className="w-24 h-24 object-cover rounded-lg border border-border"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          </div>
+        )}
       </div>
     </article>
   );
