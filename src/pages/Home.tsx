@@ -14,6 +14,14 @@ const Home = () => {
   const [crawling, setCrawling] = useState(false);
   const { toast } = useToast();
 
+  // Lista de sites específicos para atualizar com o botão
+  const specificUrls = [
+    'https://g1.globo.com/df/distrito-federal/noticia/2025/08/27/condominio-onde-bolsonaro-cumpre-prisao-no-df-ja-soltou-notas-para-regular-uso-de-drones-e-negar-expulsao-de-moradores.ghtml',
+    'https://oglobo.globo.com/rio/noticia/2025/08/26/casa-do-traficante-lacoste-um-dos-chefes-do-tcp-tinha-saida-secreta-para-mata-na-comunidade-da-serrinha.ghtml',
+    'https://www.cartacapital.com.br/politica/motta-acena-a-bolsonaristas-e-camara-deve-votar-nesta-quarta-blindagem-a-parlamentares/',
+    'https://oglobo.globo.com/economia/imposto-de-renda/noticia/2025/08/27/isencao-de-ir-para-quem-ganha-ate-r-5-mil-veja-como-o-projeto-mexe-no-bolso-de-cada-classe-social.ghtml',
+    'https://veja.abril.com.br/coluna/radar/pf-recomenda-a-moraes-colocar-agentes-dentro-da-casa-de-bolsonaro/'
+  ];
   const loadNews = async () => {
     setLoading(true);
     try {
@@ -151,14 +159,8 @@ const Home = () => {
   useEffect(() => {
     loadNews();
     
-    // Auto-crawl specific news URLs on component mount
-    const specificUrls = [
-      'https://g1.globo.com/df/distrito-federal/noticia/2025/08/27/condominio-onde-bolsonaro-cumpre-prisao-no-df-ja-soltou-notas-para-regular-uso-de-drones-e-negar-expulsao-de-moradores.ghtml',
-      'https://oglobo.globo.com/rio/noticia/2025/08/26/casa-do-traficante-lacoste-um-dos-chefes-do-tcp-tinha-saida-secreta-para-mata-na-comunidade-da-serrinha.ghtml',
-      'https://www.cartacapital.com.br/politica/motta-acena-a-bolsonaristas-e-camara-deve-votar-nesta-quarta-blindagem-a-parlamentares/',
-      'https://oglobo.globo.com/economia/imposto-de-renda/noticia/2025/08/27/isencao-de-ir-para-quem-ganha-ate-r-5-mil-veja-como-o-projeto-mexe-no-bolso-de-cada-classe-social.ghtml',
-      'https://veja.abril.com.br/coluna/radar/pf-recomenda-a-moraes-colocar-agentes-dentro-da-casa-de-bolsonaro/'
-    ];
+    // Usando a lista specificUrls definida acima
+
     
     // Check if we need to crawl these specific URLs
     const checkAndCrawlSpecific = async () => {
@@ -270,6 +272,15 @@ const Home = () => {
                 >
                   <RefreshCw className={`w-4 h-4 mr-2 ${crawling ? 'animate-spin' : ''}`} />
                   {crawling ? 'Buscando...' : 'Atualizar'}
+                </Button>
+                <Button 
+                  onClick={() => crawlSpecificNews(specificUrls)}
+                  disabled={crawling}
+                  variant="outline"
+                  size="sm"
+                >
+                  <RefreshCw className={`w-4 h-4 mr-2 ${crawling ? 'animate-spin' : ''}`} />
+                  {crawling ? 'Buscando...' : 'Atualizar meus sites'}
                 </Button>
                 <Button asChild variant="outline">
                   <Link to="/search">

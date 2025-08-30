@@ -205,21 +205,24 @@ Deno.serve(async (req) => {
             published_at: string | null;
           }>;
 
-        if (rows.length === 0) {
-          results.push({ source, inserted: 0, processed: 0, errors: 0 });
+        // Deduplicate by URL to avoid ON CONFLICT affecting the same row twice
+        const uniqueRows = Array.from(new Map(rows.map(r => [r.url, r])).values());
+
+        if (uniqueRows.length === 0) {
+          results.push({ source, inserted: 0, processed: rows.length, errors: 0 });
           continue;
         }
 
         // Upsert on url to avoid duplicates
         const { error } = await supabase
           .from("news_items")
-          .upsert(rows, { onConflict: "url" });
+          .upsert(uniqueRows, { onConflict: "url" });
 
         if (error) {
           console.error(`[${source}] upsert error:`, error);
-          results.push({ source, inserted: 0, processed: rows.length, errors: rows.length });
+          results.push({ source, inserted: 0, processed: rows.length, errors: uniqueRows.length });
         } else {
-          results.push({ source, inserted: rows.length, processed: rows.length, errors: 0 });
+          results.push({ source, inserted: uniqueRows.length, processed: rows.length, errors: 0 });
         }
       } catch (e) {
         console.error(`[${source}] crawl error:`, e);
