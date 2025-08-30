@@ -265,15 +265,6 @@ const Home = () => {
               </h2>
               <div className="flex gap-2">
                 <Button 
-                  onClick={crawlNews}
-                  disabled={crawling}
-                  variant="outline"
-                  size="sm"
-                >
-                  <RefreshCw className={`w-4 h-4 mr-2 ${crawling ? 'animate-spin' : ''}`} />
-                  {crawling ? 'Buscando...' : 'Atualizar'}
-                </Button>
-                <Button 
                   onClick={() => crawlSpecificNews(specificUrls)}
                   disabled={crawling}
                   variant="outline"
