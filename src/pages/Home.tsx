@@ -29,7 +29,7 @@ const Home = () => {
         .from('news_items')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(10);
+        .limit(20);
       
       if (error) {
         console.error('Error loading news:', error);
@@ -54,7 +54,12 @@ const Home = () => {
 
       // Transform Supabase data to NewsItem format
       const transformedNews: NewsItem[] = (data || [])
-        .filter(item => item.title && item.summary) // Only include items with title and summary
+        .filter(item => 
+          item.title && 
+          item.summary && 
+          !item.title.includes('Apuração das Eleições') && // Remove páginas duplicadas de eleições
+          item.title !== 'g1 - O portal de notícias da Globo' // Remove homepage do G1
+        ) 
         .map(item => ({
           id: item.id,
           title: item.title || 'Título não disponível',
@@ -66,7 +71,8 @@ const Home = () => {
           readTime: item.read_time || 5,
           image: item.image_url,
           url: item.url
-        }));
+        }))
+        .slice(0, 15); // Mostrar até 15 notícias
 
       setNewsData(transformedNews);
     } catch (error) {
