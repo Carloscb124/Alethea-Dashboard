@@ -289,7 +289,7 @@ const Home = () => {
                   size="sm"
                 >
                   <RefreshCw className={`w-4 h-4 mr-2 ${crawling ? 'animate-spin' : ''}`} />
-                  {crawling ? 'Buscando...' : 'Atualizar meus sites'}
+                  {crawling ? 'Buscando...' : 'Atualizar'}
                 </Button>
                 <Button asChild variant="outline">
                   <Link to="/search">
