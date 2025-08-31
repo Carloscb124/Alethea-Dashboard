@@ -123,23 +123,41 @@ const Home = () => {
   const crawlNews = async () => {
     setCrawling(true);
     try {
-      const { data, error } = await supabase.functions.invoke('crawl-news', {
-        body: { limit: 5 }
+      // Busca as fontes da API (Edge Function) e usa suas URLs para o crawler
+      const { data: sourcesResp, error: sourcesError } = await supabase.functions.invoke('news-sources');
+      if (sourcesError) {
+        console.error('Error loading sources:', sourcesError);
+        toast({
+          title: 'Erro ao carregar fontes',
+          description: 'Não foi possível carregar a lista de fontes.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      const urls = (sourcesResp as any)?.news_sources?.map((s: any) => s.url).filter(Boolean) || [];
+      if (urls.length === 0) {
+        toast({ title: 'Nenhuma fonte disponível', description: 'A lista de fontes está vazia.' });
+        return;
+      }
+
+      const { error } = await supabase.functions.invoke('crawl-news', {
+        body: { sources: urls, limit: 5 }
       });
 
       if (error) {
         console.error('Error crawling news:', error);
         toast({
-          title: "Erro ao buscar notícias",
-          description: "Não foi possível buscar novas notícias.",
-          variant: "destructive",
+          title: 'Erro ao buscar notícias',
+          description: 'Não foi possível buscar novas notícias.',
+          variant: 'destructive',
         });
         return;
       }
 
       toast({
-        title: "Notícias atualizadas!",
-        description: "Novas notícias foram coletadas com sucesso.",
+        title: 'Notícias atualizadas!',
+        description: 'Novas notícias foram coletadas com sucesso.',
       });
 
       // Reload news after crawling
@@ -147,9 +165,9 @@ const Home = () => {
     } catch (error) {
       console.error('Error crawling news:', error);
       toast({
-        title: "Erro ao buscar notícias",
-        description: "Ocorreu um erro inesperado.",
-        variant: "destructive",
+        title: 'Erro ao buscar notícias',
+        description: 'Ocorreu um erro inesperado.',
+        variant: 'destructive',
       });
     } finally {
       setCrawling(false);
@@ -265,7 +283,7 @@ const Home = () => {
               </h2>
               <div className="flex gap-2">
                 <Button 
-                  onClick={() => crawlSpecificNews(specificUrls)}
+                  onClick={crawlNews}
                   disabled={crawling}
                   variant="outline"
                   size="sm"
