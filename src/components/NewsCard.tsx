@@ -65,7 +65,7 @@ const NewsCard = ({ news, onClick }: NewsCardProps) => {
             <img 
               src={news.image} 
               alt={news.title}
-              className="w-24 h-24 object-cover rounded-lg border border-border"
+              className="w-32 h-32 object-cover rounded-lg border border-border"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
               }}
