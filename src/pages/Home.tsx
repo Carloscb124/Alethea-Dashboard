@@ -41,7 +41,10 @@ const Home = () => {
         return;
       }
 
-      // If no news items exist, automatically crawl some
+      // Check if we need to crawl fresh news (if no recent news in last 6 hours)
+      const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000);
+      const recentNews = data?.filter(item => new Date(item.created_at) > sixHoursAgo) || [];
+      
       if (!data || data.length === 0) {
         toast({
           title: "Buscando notícias...",
@@ -50,6 +53,16 @@ const Home = () => {
         setLoading(false);
         await crawlNews();
         return;
+      }
+
+      // If no recent news, automatically crawl
+      if (recentNews.length === 0) {
+        toast({
+          title: "Atualizando notícias...",
+          description: "Buscando notícias mais recentes.",
+        });
+        // Don't await this to show existing news while updating
+        crawlNews();
       }
 
       // Transform Supabase data to NewsItem format
