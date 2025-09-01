@@ -11,6 +11,8 @@
 O **Alethea** é uma plataforma **open source** de checagem de fatos e jornalismo colaborativo.  
 O projeto tem como objetivo combater a desinformação por meio de um **jornal de notícias verificadas** e uma **API aberta**, que permite integração com veículos de imprensa, órgãos públicos e plataformas digitais.
 
+⚠️ **Status**: Este projeto ainda está em fase de **protótipo** e em constante desenvolvimento.
+
 🔗 **Deploy**: [Acesse aqui](https://alethea-dashboard.vercel.app/)  
 📂 **Repositório**: [GitHub](https://github.com/Carloscb124/Alethea-Dashboard)
 
