@@ -26,7 +26,7 @@ const Navbar = () => {
             <img 
               src="/lovable-uploads/a98b6b42-db96-4251-bb95-3c7805954a69.png" 
               alt="Alethea Logo" 
-              className="w-8 h-8 rounded-lg"
+              className="w-10 h-10 rounded-lg"
             />
             <span className="text-xl font-bold text-foreground">Alethea</span>
           </Link>
