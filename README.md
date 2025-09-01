@@ -1,73 +1,121 @@
-# Welcome to your Lovable project
+# 📌 Alethea Dashboard
 
-## Project info
+<div align="center">
+  <a href="https://alethea-dashboard.vercel.app/">
+    <img src="https://alethea-dashboard.vercel.app/logo.png" alt="Alethea Logo" width="200"/>
+  </a>
+</div>
 
-**URL**: https://lovable.dev/projects/4de3b33b-35a4-480d-be65-2c3b29919b1c
+## 📰 Sobre o Projeto
 
-## How can I edit this code?
+O **Alethea** é uma plataforma **open source** de checagem de fatos e jornalismo colaborativo.  
+O projeto tem como objetivo combater a desinformação por meio de um **jornal de notícias verificadas** e uma **API aberta**, que permite integração com veículos de imprensa, órgãos públicos e plataformas digitais.
 
-There are several ways of editing your application.
+🔗 **Deploy**: [Acesse aqui](https://alethea-dashboard.vercel.app/)  
+📂 **Repositório**: [GitHub](https://github.com/Carloscb124/Alethea-Dashboard)
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4de3b33b-35a4-480d-be65-2c3b29919b1c) and start prompting.
+## 🎯 Objetivos
 
-Changes made via Lovable will be committed automatically to this repo.
+- Fornecer notícias verificadas em tempo real.
+- Disponibilizar uma API aberta para integração com terceiros.
+- Criar uma experiência colaborativa entre jornalistas, veículos de mídia e o público.
+- Implementar módulos de integração com big techs (Meta, X, Google, Telegram).
+- Promover **educação midiática** por meio de artigos, vídeos e tutoriais.
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 👥 Público-Alvo
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Jornalistas independentes e redações.  
+- Veículos jornalísticos locais e nacionais.  
+- Plataformas digitais e redes sociais.  
+- Estudantes, professores e público geral interessado em alfabetização midiática.  
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## ⚙️ Estrutura do Sistema
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 📱 Aplicativo Mobile (em desenvolvimento)
+- Feed de notícias verificadas.  
+- Busca por temas.  
+- Envio de links e imagens para checagem.  
+- Artigos educativos.  
 
-# Step 3: Install the necessary dependencies.
-npm i
+### 🌐 Dashboard Web
+- Interface para redações e jornalistas.  
+- Inserção, revisão e publicação de checagens.  
+- Histórico aberto e transparente de verificações.  
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+### 🔌 API Aberta
+- **Gratuita**: acesso básico com limite de requisições.  
+- **Premium**: relatórios, filtros e maior volume de dados.  
+- Documentação pública no GitHub.  
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- **Frontend**: React + Vercel (deploy)  
+- **Backend/API**: Node.js (em desenvolvimento)  
+- **Banco de Dados**: PostgreSQL/MySQL (planejado)  
+- **Estilo**: TailwindCSS / Shadcn UI  
+- **Integrações Futuras**: Meta, Google, X (Twitter), Telegram  
+
+---
+
+## 🚀 Como Executar o Projeto
+
+```bash
+# Clone este repositório
+git clone https://github.com/Carloscb124/Alethea-Dashboard
+
+# Acesse a pasta do projeto
+cd Alethea-Dashboard
+
+# Instale as dependências
+npm install
+
+# Rode a aplicação em ambiente de desenvolvimento
 npm run dev
+
+# O projeto estará disponível em:
+http://localhost:3000
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📌 Roadmap
 
-**Use GitHub Codespaces**
+- [x] Protótipo do Dashboard  
+- [x] Deploy inicial no Vercel  
+- [ ] Integração com API de checagem  
+- [ ] Área de envio de links e imagens  
+- [ ] Aplicativo Mobile Android/iOS  
+- [ ] Módulos de integração com Big Techs  
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## 📜 Licença
 
-This project is built with:
+Este projeto está licenciado sob a **AGPL v3.0** – garantindo transparência e que todas as modificações sejam também públicas.  
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+## ✨ Contribuição
 
-Simply open [Lovable](https://lovable.dev/projects/4de3b33b-35a4-480d-be65-2c3b29919b1c) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+1. Faça um fork do projeto.  
+2. Crie uma branch para sua feature:  
+   ```bash
+   git checkout -b minha-feature
+   ```
+3. Commit suas mudanças:  
+   ```bash
+   git commit -m 'Adiciona minha feature'
+   ```
+4. Push para a branch:  
+   ```bash
+   git push origin minha-feature
+   ```
+5. Abra um Pull Request.  
