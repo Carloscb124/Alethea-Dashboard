@@ -2,7 +2,7 @@
 
 <div align="center">
   <a href="https://alethea-dashboard.vercel.app/">
-    <img src="https://alethea-dashboard.vercel.app/public/lovable-uploads/a98b6b42-db96-4251-bb95-3c7805954a69.png" alt="Alethea Logo" width="200"/>
+    <img src="public/lovable-uploads/a98b6b42-db96-4251-bb95-3c7805954a69.png" alt="Alethea Logo" width="200"/>
   </a>
 </div>
 
