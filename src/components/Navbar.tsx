@@ -24,7 +24,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <img 
-              src="/lovable-uploads/c3a6ce76-f1bb-4abd-9151-fccb78b497df.png" 
+              src="/lovable-uploads/a98b6b42-db96-4251-bb95-3c7805954a69.png" 
               alt="Alethea Logo" 
               className="w-8 h-8 rounded-lg"
             />
