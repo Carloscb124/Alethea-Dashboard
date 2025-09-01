@@ -41,42 +41,19 @@ const Home = () => {
         return;
       }
 
-      // Check if we need to crawl fresh news (if no recent news in last 6 hours)
-      const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000);
-      const recentNews = data?.filter(item => new Date(item.created_at) > sixHoursAgo) || [];
-      
-      if (!data || data.length === 0) {
-        toast({
-          title: "Buscando notícias...",
-          description: "A base de dados está vazia. Buscando notícias automaticamente.",
-        });
-        setLoading(false);
-        await crawlNews();
-        return;
-      }
-
-      // If no recent news, automatically crawl
-      if (recentNews.length === 0) {
-        toast({
-          title: "Atualizando notícias...",
-          description: "Buscando notícias mais recentes.",
-        });
-        // Don't await this to show existing news while updating
-        crawlNews();
-      }
-
       // Transform Supabase data to NewsItem format
       const transformedNews: NewsItem[] = (data || [])
         .filter(item => 
           item.title && 
           item.summary && 
           !item.title.includes('Apuração das Eleições') && // Remove páginas duplicadas de eleições
-          item.title !== 'g1 - O portal de notícias da Globo' // Remove homepage do G1
+          item.title !== 'g1 - O portal de notícias da Globo' && // Remove homepage do G1
+          !item.title.includes('Assine nosso feed') // Remove páginas de assinatura
         ) 
         .map(item => ({
           id: item.id,
           title: item.title || 'Título não disponível',
-          summary: item.summary || 'Resumo não disponível',
+          summary: item.summary || item.title || 'Resumo não disponível',
           category: item.category || 'Geral',
           date: item.published_at || item.created_at,
           source: item.source || 'Fonte não identificada',
@@ -88,6 +65,20 @@ const Home = () => {
         .slice(0, 15); // Mostrar até 15 notícias
 
       setNewsData(transformedNews);
+
+      // Check if we need to crawl fresh news (if no recent news in last 12 hours)
+      const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000);
+      const recentNews = data?.filter(item => new Date(item.created_at) > twelveHoursAgo) || [];
+      
+      // Only attempt to crawl if we have very few recent news and not already crawling
+      if (recentNews.length < 3 && !crawling) {
+        toast({
+          title: "Buscando notícias mais recentes...",
+          description: "Verificando se há novas notícias disponíveis.",
+        });
+        // Don't await this to show existing news while updating
+        setTimeout(() => crawlNews(), 3000); // Delay to avoid rate limits
+      }
     } catch (error) {
       console.error('Error loading news:', error);
       toast({
@@ -140,6 +131,8 @@ const Home = () => {
   };
 
   const crawlNews = async () => {
+    if (crawling) return; // Prevent multiple simultaneous crawls
+    
     setCrawling(true);
     try {
       // Busca as fontes da API (Edge Function) e usa suas URLs para o crawler
@@ -161,16 +154,25 @@ const Home = () => {
       }
 
       const { error } = await supabase.functions.invoke('crawl-news', {
-        body: { sources: urls, limit: 5 }
+        body: { sources: urls.slice(0, 3), limit: 3 } // Reduced to avoid rate limits
       });
 
       if (error) {
         console.error('Error crawling news:', error);
-        toast({
-          title: 'Erro ao buscar notícias',
-          description: 'Não foi possível buscar novas notícias.',
-          variant: 'destructive',
-        });
+        // Check if it's a rate limit error
+        if (error.message?.includes('Rate limit')) {
+          toast({
+            title: 'Limite de requisições atingido',
+            description: 'Aguarde alguns minutos antes de tentar novamente.',
+            variant: 'destructive',
+          });
+        } else {
+          toast({
+            title: 'Erro ao buscar notícias',
+            description: 'Não foi possível buscar novas notícias no momento.',
+            variant: 'destructive',
+          });
+        }
         return;
       }
 
@@ -180,7 +182,7 @@ const Home = () => {
       });
 
       // Reload news after crawling
-      await loadNews();
+      setTimeout(() => loadNews(), 2000);
     } catch (error) {
       console.error('Error crawling news:', error);
       toast({
