@@ -11,7 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 const Home = () => {
   const [newsData, setNewsData] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [crawling, setCrawling] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const { toast } = useToast();
 
   // Lista de sites específicos para atualizar com o botão
@@ -22,14 +22,19 @@ const Home = () => {
     'https://oglobo.globo.com/economia/imposto-de-renda/noticia/2025/08/27/isencao-de-ir-para-quem-ganha-ate-r-5-mil-veja-como-o-projeto-mexe-no-bolso-de-cada-classe-social.ghtml',
     'https://veja.abril.com.br/coluna/radar/pf-recomenda-a-moraes-colocar-agentes-dentro-da-casa-de-bolsonaro/'
   ];
-  const loadNews = async () => {
-    setLoading(true);
+  const loadNews = async (isRefresh = false) => {
+    if (isRefresh) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
+    }
+    
     try {
       const { data, error } = await supabase
         .from('news_items')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(20);
+        .limit(15);
       
       if (error) {
         console.error('Error loading news:', error);
@@ -46,9 +51,9 @@ const Home = () => {
         .filter(item => 
           item.title && 
           item.summary && 
-          !item.title.includes('Apuração das Eleições') && // Remove páginas duplicadas de eleições
-          item.title !== 'g1 - O portal de notícias da Globo' && // Remove homepage do G1
-          !item.title.includes('Assine nosso feed') // Remove páginas de assinatura
+          !item.title.includes('Apuração das Eleições') &&
+          item.title !== 'g1 - O portal de notícias da Globo' &&
+          !item.title.includes('Assine nosso feed')
         ) 
         .map(item => ({
           id: item.id,
@@ -57,27 +62,17 @@ const Home = () => {
           category: item.category || 'Geral',
           date: item.published_at || item.created_at,
           source: item.source || 'Fonte não identificada',
-          status: 'partial' as const, // Default status since we don't have verification yet
+          status: 'partial' as const,
           readTime: item.read_time || 5,
           image: item.image_url,
           url: item.url
-        }))
-        .slice(0, 15); // Mostrar até 15 notícias
+        }));
 
       setNewsData(transformedNews);
 
-      // Check if we need to crawl fresh news (if no recent news in last 12 hours)
-      const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000);
-      const recentNews = data?.filter(item => new Date(item.created_at) > twelveHoursAgo) || [];
-      
-      // Only attempt to crawl if we have very few recent news and not already crawling
-      if (recentNews.length < 3 && !crawling) {
-        toast({
-          title: "Buscando notícias mais recentes...",
-          description: "Verificando se há novas notícias disponíveis.",
-        });
-        // Don't await this to show existing news while updating
-        setTimeout(() => crawlNews(), 3000); // Delay to avoid rate limits
+      // Background check for fresh news (non-blocking)
+      if (!isRefresh) {
+        checkAndUpdateNews(data);
       }
     } catch (error) {
       console.error('Error loading news:', error);
@@ -88,78 +83,64 @@ const Home = () => {
       });
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
-  const crawlSpecificNews = async (urls: string[]) => {
-    setCrawling(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('crawl-news', {
-        body: { 
-          sources: urls,
-          limit: 1 // Only get the main article from each URL
-        }
-      });
-
-      if (error) {
-        console.error('Error crawling specific news:', error);
-        toast({
-          title: "Erro ao buscar notícias",
-          description: "Não foi possível buscar as notícias específicas.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      toast({
-        title: "Notícias específicas adicionadas!",
-        description: `${urls.length} notícias foram processadas com sucesso.`,
-      });
-
-      // Reload news after crawling
-      await loadNews();
-    } catch (error) {
-      console.error('Error crawling specific news:', error);
-      toast({
-        title: "Erro ao buscar notícias",
-        description: "Ocorreu um erro inesperado.",
-        variant: "destructive",
-      });
-    } finally {
-      setCrawling(false);
-    }
-  };
-
-  const crawlNews = async () => {
-    if (crawling) return; // Prevent multiple simultaneous crawls
+  const checkAndUpdateNews = async (currentData: any[]) => {
+    // Non-blocking background check for fresh content
+    const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000);
+    const recentNews = currentData?.filter(item => new Date(item.created_at) > sixHoursAgo) || [];
     
-    setCrawling(true);
+    if (recentNews.length < 5) {
+      // Background crawl - don't show loading to user
+      setTimeout(() => backgroundCrawl(), 2000);
+    }
+  };
+
+  const backgroundCrawl = async () => {
     try {
-      // Busca as fontes da API (Edge Function) e usa suas URLs para o crawler
-      const { data: sourcesResp, error: sourcesError } = await supabase.functions.invoke('news-sources');
-      if (sourcesError) {
-        console.error('Error loading sources:', sourcesError);
-        toast({
-          title: 'Erro ao carregar fontes',
-          description: 'Não foi possível carregar a lista de fontes.',
-          variant: 'destructive',
+      const { data: sourcesResp } = await supabase.functions.invoke('news-sources');
+      const urls = (sourcesResp as any)?.news_sources?.map((s: any) => s.url).filter(Boolean) || [];
+      
+      if (urls.length > 0) {
+        await supabase.functions.invoke('crawl-news', {
+          body: { sources: urls.slice(0, 2), limit: 2 }
+        });
+        // Silently refresh after background crawl
+        setTimeout(() => loadNews(true), 5000);
+      }
+    } catch (error) {
+      // Silent fail for background operations
+      console.log('Background crawl failed:', error);
+    }
+  };
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      const { data: sourcesResp } = await supabase.functions.invoke('news-sources');
+      const urls = (sourcesResp as any)?.news_sources?.map((s: any) => s.url).filter(Boolean) || [];
+      
+      if (urls.length === 0) {
+        toast({ 
+          title: 'Nenhuma fonte disponível', 
+          description: 'A lista de fontes está vazia.',
+          variant: 'destructive'
         });
         return;
       }
 
-      const urls = (sourcesResp as any)?.news_sources?.map((s: any) => s.url).filter(Boolean) || [];
-      if (urls.length === 0) {
-        toast({ title: 'Nenhuma fonte disponível', description: 'A lista de fontes está vazia.' });
-        return;
-      }
+      toast({
+        title: 'Buscando notícias...',
+        description: 'Aguarde enquanto coletamos as últimas notícias.',
+      });
 
       const { error } = await supabase.functions.invoke('crawl-news', {
-        body: { sources: urls.slice(0, 3), limit: 3 } // Reduced to avoid rate limits
+        body: { sources: urls.slice(0, 3), limit: 3 }
       });
 
       if (error) {
-        console.error('Error crawling news:', error);
-        // Check if it's a rate limit error
         if (error.message?.includes('Rate limit')) {
           toast({
             title: 'Limite de requisições atingido',
@@ -182,41 +163,21 @@ const Home = () => {
       });
 
       // Reload news after crawling
-      setTimeout(() => loadNews(), 2000);
+      setTimeout(() => loadNews(true), 3000);
     } catch (error) {
-      console.error('Error crawling news:', error);
+      console.error('Error refreshing news:', error);
       toast({
-        title: 'Erro ao buscar notícias',
+        title: 'Erro ao atualizar',
         description: 'Ocorreu um erro inesperado.',
         variant: 'destructive',
       });
     } finally {
-      setCrawling(false);
+      setRefreshing(false);
     }
   };
 
   useEffect(() => {
     loadNews();
-    
-    // Usando a lista specificUrls definida acima
-
-    
-    // Check if we need to crawl these specific URLs
-    const checkAndCrawlSpecific = async () => {
-      const { data } = await supabase
-        .from('news_items')
-        .select('url')
-        .in('url', specificUrls);
-      
-      const existingUrls = data?.map(item => item.url) || [];
-      const missingUrls = specificUrls.filter(url => !existingUrls.includes(url));
-      
-      if (missingUrls.length > 0) {
-        setTimeout(() => crawlSpecificNews(missingUrls), 2000); // Delay to avoid conflicts
-      }
-    };
-    
-    checkAndCrawlSpecific();
   }, []);
 
   const stats = [
@@ -304,13 +265,13 @@ const Home = () => {
               </h2>
               <div className="flex gap-2">
                 <Button 
-                  onClick={crawlNews}
-                  disabled={crawling}
+                  onClick={handleRefresh}
+                  disabled={refreshing}
                   variant="outline"
                   size="sm"
                 >
-                  <RefreshCw className={`w-4 h-4 mr-2 ${crawling ? 'animate-spin' : ''}`} />
-                  {crawling ? 'Buscando...' : 'Atualizar'}
+                  <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+                  {refreshing ? 'Buscando...' : 'Atualizar'}
                 </Button>
                 <Button asChild variant="outline">
                   <Link to="/search">
@@ -321,7 +282,7 @@ const Home = () => {
               </div>
             </div>
 
-            {loading || crawling ? (
+            {loading ? (
               <div className="grid gap-6">
                 {[...Array(3)].map((_, i) => (
                   <div key={i} className="card-alethea animate-pulse">
@@ -341,9 +302,9 @@ const Home = () => {
             ) : newsData.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground mb-4">Nenhuma notícia encontrada.</p>
-                <Button onClick={crawlNews} variant="outline">
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Buscar Notícias
+                <Button onClick={handleRefresh} variant="outline" disabled={refreshing}>
+                  <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+                  {refreshing ? 'Buscando...' : 'Buscar Notícias'}
                 </Button>
               </div>
             ) : (
