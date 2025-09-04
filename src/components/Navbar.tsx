@@ -19,20 +19,20 @@ const Navbar = () => {
 
   return (
     <nav className="navbar-alethea fixed top-0 left-0 right-0 z-50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <img 
               src="/lovable-uploads/a98b6b42-db96-4251-bb95-3c7805954a69.png" 
               alt="Alethea Logo" 
-              className="w-[120px] h-[120px] rounded-lg"
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg"
             />
-            <span className="text-xl font-bold text-foreground">Alethea</span>
+            <span className="text-lg sm:text-xl font-bold text-foreground">Alethea</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center space-x-1">
             {navItems.map((item) => (
               <Link
                 key={item.path}
@@ -50,7 +50,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden lg:flex items-center space-x-2">
             <ThemeSelector />
             <Button 
               asChild
@@ -60,23 +60,26 @@ const Navbar = () => {
             </Button>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden p-2 rounded-lg hover:bg-muted"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          {/* Mobile Theme Selector and Menu */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <ThemeSelector />
+            <button
+              className="p-2 rounded-lg hover:bg-muted transition-colors"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 space-y-2">
+          <div className="lg:hidden py-4 space-y-2 animate-fade-in">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                   isActive(item.path)
                     ? 'bg-primary text-primary-foreground'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -87,14 +90,11 @@ const Navbar = () => {
                 <span>{item.label}</span>
               </Link>
             ))}
-            <div className="pt-2 border-t border-border">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-muted-foreground">Tema:</span>
-                <ThemeSelector />
-              </div>
+            <div className="pt-4 border-t border-border mt-4">
               <Button 
                 asChild
                 className="btn-primary w-full"
+                size="lg"
               >
                 <Link to="/login" onClick={() => setIsMenuOpen(false)}>
                   Dashboard

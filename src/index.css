@@ -316,6 +316,28 @@
 }
 
 @layer components {
+  /* Line clamp utilities for responsive text truncation */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
   .verification-badge {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
     transition: var(--transition-smooth);

@@ -206,20 +206,21 @@ const Home = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-24 pb-12 bg-gradient-hero text-white">
-        <div className="container mx-auto px-4">
+      <section className="pt-20 sm:pt-24 pb-8 sm:pb-12 bg-gradient-hero text-white">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
               Jornal <span className="text-primary-glow">Alethea</span>
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-6 sm:mb-8 leading-relaxed px-4">
               Notícias verificadas para uma sociedade melhor informada
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-md sm:max-w-none mx-auto">
               <Button 
                 asChild
                 size="lg"
                 variant="secondary"
+                className="w-full sm:w-auto"
               >
                 <Link to="/submit">
                   Enviar Conteúdo
@@ -230,6 +231,7 @@ const Home = () => {
                 asChild
                 variant="hero"
                 size="lg"
+                className="w-full sm:w-auto"
               >
                 <Link to="/learn">Aprenda a Verificar</Link>
               </Button>
@@ -239,16 +241,16 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 bg-card border-b border-border">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+      <section className="py-8 sm:py-12 bg-card border-b border-border">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="flex justify-center mb-3">
-                  <stat.icon className={`w-8 h-8 ${stat.color}`} />
+              <div key={index} className="text-center p-4 sm:p-0">
+                <div className="flex justify-center mb-2 sm:mb-3">
+                  <stat.icon className={`w-6 h-6 sm:w-8 sm:h-8 ${stat.color}`} />
                 </div>
-                <p className="text-3xl font-bold text-foreground mb-1">{stat.value}</p>
-                <p className="text-muted-foreground">{stat.label}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-foreground mb-1">{stat.value}</p>
+                <p className="text-sm sm:text-base text-muted-foreground">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -256,24 +258,25 @@ const Home = () => {
       </section>
 
       {/* News Feed */}
-      <main className="py-12">
-        <div className="container mx-auto px-4">
+      <main className="py-8 sm:py-12">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-foreground">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground">
                 Últimas Verificações
               </h2>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                 <Button 
                   onClick={handleRefresh}
                   disabled={refreshing}
                   variant="outline"
                   size="sm"
+                  className="w-full sm:w-auto"
                 >
                   <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
                   {refreshing ? 'Buscando...' : 'Atualizar'}
                 </Button>
-                <Button asChild variant="outline">
+                <Button asChild variant="outline" className="w-full sm:w-auto">
                   <Link to="/search">
                     Ver Todas
                     <ArrowRight className="ml-2 w-4 h-4" />
@@ -283,16 +286,16 @@ const Home = () => {
             </div>
 
             {loading ? (
-              <div className="grid gap-6">
+              <div className="grid gap-4 sm:gap-6">
                 {[...Array(3)].map((_, i) => (
-                  <div key={i} className="card-alethea animate-pulse">
-                    <div className="flex justify-between mb-3">
+                  <div key={i} className="card-alethea animate-pulse p-4 sm:p-6">
+                    <div className="flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-0 mb-3">
                       <div className="h-4 bg-muted rounded w-16"></div>
                       <div className="h-4 bg-muted rounded w-20"></div>
                     </div>
-                    <div className="h-6 bg-muted rounded mb-2"></div>
-                    <div className="h-4 bg-muted rounded mb-4 w-3/4"></div>
-                    <div className="flex justify-between">
+                    <div className="h-5 sm:h-6 bg-muted rounded mb-2"></div>
+                    <div className="h-4 bg-muted rounded mb-4 w-full sm:w-3/4"></div>
+                    <div className="flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-0">
                       <div className="h-3 bg-muted rounded w-24"></div>
                       <div className="h-3 bg-muted rounded w-16"></div>
                     </div>
@@ -300,15 +303,15 @@ const Home = () => {
                 ))}
               </div>
             ) : newsData.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground mb-4">Nenhuma notícia encontrada.</p>
-                <Button onClick={handleRefresh} variant="outline" disabled={refreshing}>
+              <div className="text-center py-8 sm:py-12 px-4">
+                <p className="text-muted-foreground mb-4 text-sm sm:text-base">Nenhuma notícia encontrada.</p>
+                <Button onClick={handleRefresh} variant="outline" disabled={refreshing} className="w-full sm:w-auto">
                   <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
                   {refreshing ? 'Buscando...' : 'Buscar Notícias'}
                 </Button>
               </div>
             ) : (
-              <div className="grid gap-6">
+              <div className="grid gap-4 sm:gap-6">
                 {newsData.map((news) => (
                   <NewsCard 
                     key={news.id} 
