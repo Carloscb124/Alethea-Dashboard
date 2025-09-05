@@ -14,12 +14,70 @@ export type Database = {
   }
   public: {
     Tables: {
+      fact_checks: {
+        Row: {
+          analysis: string
+          checked_at: string
+          checked_by: string | null
+          created_at: string
+          id: string
+          news_item_id: string | null
+          published: boolean
+          sources: string[]
+          submission_id: string | null
+          updated_at: string
+          verdict: string
+        }
+        Insert: {
+          analysis: string
+          checked_at?: string
+          checked_by?: string | null
+          created_at?: string
+          id?: string
+          news_item_id?: string | null
+          published?: boolean
+          sources?: string[]
+          submission_id?: string | null
+          updated_at?: string
+          verdict: string
+        }
+        Update: {
+          analysis?: string
+          checked_at?: string
+          checked_by?: string | null
+          created_at?: string
+          id?: string
+          news_item_id?: string | null
+          published?: boolean
+          sources?: string[]
+          submission_id?: string | null
+          updated_at?: string
+          verdict?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fact_checks_news_item_id_fkey"
+            columns: ["news_item_id"]
+            isOneToOne: false
+            referencedRelation: "news_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fact_checks_submission_id_fkey"
+            columns: ["submission_id"]
+            isOneToOne: false
+            referencedRelation: "submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       news_items: {
         Row: {
           category: string | null
           content_html: string | null
           content_markdown: string | null
           created_at: string
+          fact_check_id: string | null
           id: string
           image_url: string | null
           published_at: string | null
@@ -29,12 +87,14 @@ export type Database = {
           title: string | null
           updated_at: string
           url: string
+          verification_status: string | null
         }
         Insert: {
           category?: string | null
           content_html?: string | null
           content_markdown?: string | null
           created_at?: string
+          fact_check_id?: string | null
           id?: string
           image_url?: string | null
           published_at?: string | null
@@ -44,12 +104,14 @@ export type Database = {
           title?: string | null
           updated_at?: string
           url: string
+          verification_status?: string | null
         }
         Update: {
           category?: string | null
           content_html?: string | null
           content_markdown?: string | null
           created_at?: string
+          fact_check_id?: string | null
           id?: string
           image_url?: string | null
           published_at?: string | null
@@ -59,6 +121,48 @@ export type Database = {
           title?: string | null
           updated_at?: string
           url?: string
+          verification_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "news_items_fact_check_id_fkey"
+            columns: ["fact_check_id"]
+            isOneToOne: false
+            referencedRelation: "fact_checks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      submissions: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          status: string
+          submitted_at: string
+          submitter_email: string | null
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          status?: string
+          submitted_at?: string
+          submitter_email?: string | null
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          status?: string
+          submitted_at?: string
+          submitter_email?: string | null
+          type?: string
+          updated_at?: string
         }
         Relationships: []
       }
